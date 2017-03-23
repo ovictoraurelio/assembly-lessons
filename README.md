@@ -1,2 +1,6 @@
 # assembly-lessons
-My lessons in assembly.
+
+	##Simple assembly tutorials.
+
+	x86 	- Assembly x86
+	MIPS 	- Assembly MIPSIT
