@@ -2,6 +2,8 @@ org 0x7c00 ;this command
 
 jmp 0x0000:start
 
+str_impar: db 13, 10, "Impar", 13, 10, 0
+str_par: db 13, 10, "Par", 13, 10, 0
 start:
 				; ax is a reg to geral use
 				; ds
@@ -14,14 +16,20 @@ start:
 		int 16h		; Keyboard interrupt
 
 
+		cmp al, 0x1B
+		je end					;if equal ESC end program
+		cmp al, 0x0D
+		je compare		 	;if equal to \n jump to compare
+		cmp al, '0'
+		jl scanf				;if smallest than 0 is not a number, ignore (jump to read another input keyboard)
+		cmp al, '9'
+		jg scanf				;if bigger than 9 is not a number, ignore (jump to read another input keyboard)
+
 
 	printKeyboard:
 
 		mov ah, 0xe	; Screen show content of al
 		int 10h		; Screen interrupt
-
-		cmp al,0x0D
-		je compare
 
 		mov bl,al
 		jmp scanf
@@ -37,42 +45,24 @@ start:
 		je even
 
 		odd:
-			mov al, 'i'
-			int 10h
-			mov al, 'm'
-			int 10h
-			mov al, 'p'
-			int 10h
-			mov al, 'a'
-			int 10h
-			mov al, 'r'
-			int 10h
-
-			jmp endline
-
+			mov si, str_impar
+			jmp print
 
 		even:
-			mov al, 'p'
-			int 10h
-			mov al, 'a'
-			int 10h
-			mov al, 'r'
-			int 10h
-
-			jmp endline
+			mov si, str_par
+			jmp print
 
 
+print:
+	lodsb		; load al, si index and si++
+	cmp cl,al	; compare al with 0 (0, was set as end of string)
+	je scanf
 
-		endline:
-			mov al, 10
-			int 10h
-			mov al, 13
-			int 10h
-			jmp scanf
+	mov ah,0xe	; instruction to show on screen
+	mov bh, 13h
+	int 10h		; call video interrupt
 
-
-storenumber:
-	mov dx, al
+jmp print
 
 
 end:
