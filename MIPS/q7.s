@@ -4,24 +4,18 @@
 //
 #include <reg.h>
 .data
-string: .ASCIIZ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lacinia at nulla semper tempor. Phasellus vehicula rutrum amet."	//Define a string de entrada
-char: .ASCIIZ "a"			 	//Define o caractere de entrada
+string: .ASCIIZ "nmf2-vags-jgfn"	//Define a string de entrada
+char: .ASCIIZ "a"			 		//Define o caractere de entrada
 .set noreorder 					 	//Obrigatório para essa questão
 .text
 .globl start
 .ent start
 start:
-    //la $16, caractere
-    //begin
     
-	
     lui $17, char
     lui $20, string    
     lui $16, 0x8002    
-    
-    //nop			não precisa
-    //nop			devido a ordem dos lui's...
-    
+        
     srl $17, $17, 16
     srl $20, $20, 16
     
@@ -31,7 +25,6 @@ start:
     add $17, $16, $17
     add $20, $16, $20
         
-   	//nop
   	nop
   	
     lbu $18, 0($17) 			// carrega caractere em $18
